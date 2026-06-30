@@ -2,52 +2,71 @@ import SwiftUI
 
 struct HomeView: View {
 
+    private let columns = [
+        GridItem(.flexible()),
+        GridItem(.flexible())
+    ]
+
     var body: some View {
 
-        ZStack {
+        NavigationStack {
 
-            GlassBackground()
+            ZStack {
 
-            ScrollView {
+                GlassBackground()
 
-                VStack(alignment: .leading, spacing: AppSpacing.xxLarge) {
+                ScrollView {
 
-                    Spacer(minLength: 40)
-
-                    VStack(alignment: .leading, spacing: AppSpacing.medium) {
-
-                        Spacer(minLength: 40)
+                    VStack(alignment: .leading,
+                           spacing: AppSpacing.xxLarge) {
 
                         HeroHeader()
 
-                    }
+                        ActionCard()
 
-                    GlassCard {
+                        LazyVGrid(columns: columns,
+                                  spacing: AppSpacing.medium) {
 
-                        VStack(alignment: .leading, spacing: AppSpacing.medium) {
+                            FeatureCard(
+                                icon: AppSymbols.pdf,
+                                title: "Documents",
+                                subtitle: "Understand PDFs"
+                            )
 
-                            Text("Ask Anything")
-                                .font(AppTypography.headline)
+                            FeatureCard(
+                                icon: AppSymbols.image,
+                                title: "Images",
+                                subtitle: "Analyze photos"
+                            )
 
-                            HStack {
+                            FeatureCard(
+                                icon: AppSymbols.voice,
+                                title: "Voice",
+                                subtitle: "Talk naturally"
+                            )
 
-                                Image(systemName: "message")
-
-                                Text("Type your message...")
-
-                            }
-                            .foregroundStyle(AppColors.secondaryText)
+                            FeatureCard(
+                                icon: AppSymbols.search,
+                                title: "Web",
+                                subtitle: "Explore online"
+                            )
 
                         }
 
-                    }
+                        SectionHeader(
+                            title: AppConstants.recentConversations
+                        )
 
-                    Spacer()
+                        Text("No conversations yet")
+                            .foregroundStyle(AppColors.secondaryText)
+
+                    }
+                    .padding(AppSpacing.screenPadding)
 
                 }
-                .padding(AppSpacing.screenPadding)
 
             }
+            .navigationBarHidden(true)
 
         }
 

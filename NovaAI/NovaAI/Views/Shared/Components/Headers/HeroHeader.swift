@@ -4,15 +4,15 @@ struct HeroHeader: View {
 
     var body: some View {
 
-        VStack(alignment: .leading, spacing: AppSpacing.medium) {
+        VStack(alignment: .leading, spacing: AppSpacing.large) {
 
-            Image(systemName: "sparkles")
+            Image(systemName: AppSymbols.nova)
                 .font(.system(size: 30))
                 .foregroundStyle(AppColors.accent)
 
             VStack(alignment: .leading, spacing: AppSpacing.small) {
 
-                Text("Nova")
+                Text(AppConstants.appName)
                     .font(AppTypography.hero)
                     .foregroundStyle(AppColors.primaryText)
 
@@ -20,7 +20,7 @@ struct HeroHeader: View {
                     .font(AppTypography.title2)
                     .foregroundStyle(AppColors.primaryText)
 
-                Text("What would you like to do today?")
+                Text(AppConstants.greetingTitle)
                     .font(AppTypography.body)
                     .foregroundStyle(AppColors.secondaryText)
 
@@ -30,7 +30,13 @@ struct HeroHeader: View {
 
     }
 
-    private var greeting: String {
+}
+
+// MARK: - Greeting
+
+private extension HeroHeader {
+
+    var greeting: String {
 
         let hour = Calendar.current.component(.hour, from: Date())
 
@@ -55,6 +61,14 @@ struct HeroHeader: View {
 }
 
 #Preview {
-    HeroHeader()
-        .padding()
+
+    ZStack {
+
+        GlassBackground()
+
+        HeroHeader()
+            .padding(AppSpacing.screenPadding)
+
+    }
+
 }
