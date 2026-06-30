@@ -8,28 +8,36 @@ struct FeatureCard: View {
 
     var body: some View {
 
-        GlassCard {
+        Button {
 
-            VStack(alignment: .leading,
-                   spacing: AppSpacing.medium) {
+        } label: {
 
-                Image(systemName: icon)
-                    .font(.title2)
-                    .foregroundStyle(AppColors.accent)
+            GlassCard {
 
-                Spacer()
+                VStack(alignment: .leading,
+                       spacing: AppSpacing.medium) {
 
-                Text(title)
-                    .font(AppTypography.headline)
+                    Image(systemName: icon)
+                        .font(.title2)
+                        .foregroundStyle(AppColors.accent)
 
-                Text(subtitle)
-                    .font(AppTypography.caption)
-                    .foregroundStyle(AppColors.secondaryText)
+                    Spacer()
+
+                    Text(title)
+                        .font(AppTypography.headline)
+
+                    Text(subtitle)
+                        .font(AppTypography.caption)
+                        .foregroundStyle(AppColors.secondaryText)
+
+                }
+                .frame(height: 120)
 
             }
-            .frame(height: 120)
 
         }
+        .buttonStyle(.plain)
+        .pressAnimation()
 
     }
 
@@ -43,8 +51,8 @@ struct FeatureCard: View {
 
         FeatureCard(
             icon: AppSymbols.pdf,
-            title: "Documents",
-            subtitle: "Understand PDFs"
+            title: "Understand",
+            subtitle: "Documents"
         )
         .padding()
 

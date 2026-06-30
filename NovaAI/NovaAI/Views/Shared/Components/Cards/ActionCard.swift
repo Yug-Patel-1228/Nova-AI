@@ -2,44 +2,56 @@ import SwiftUI
 
 struct ActionCard: View {
 
+    var action: (() -> Void)? = nil
+
     var body: some View {
 
-        GlassCard {
+        Button {
 
-            HStack(spacing: AppSpacing.medium) {
+            action?()
 
-                Image(systemName: "apple.intelligence")
-                    .font(.system(size: 28))
-                    .foregroundStyle(AppColors.accent)
+        } label: {
 
-                VStack(alignment: .leading, spacing: AppSpacing.small) {
+            GlassCard {
 
-                    Text("New Chat")
-                        .font(AppTypography.title2)
-                        .foregroundStyle(AppColors.primaryText)
+                HStack(spacing: AppSpacing.medium) {
 
-                    Text("Ask Nova anything...")
-                        .font(AppTypography.body)
+                    NovaIcon(size: 28)
+
+                    VStack(alignment: .leading,
+                           spacing: AppSpacing.small) {
+
+                        Text(AppConstants.newChatTitle)
+                            .font(AppTypography.title2)
+                            .foregroundStyle(AppColors.primaryText)
+
+                        Text(AppConstants.newChatSubtitle)
+                            .font(AppTypography.body)
+                            .foregroundStyle(AppColors.secondaryText)
+
+                    }
+
+                    Spacer()
+
+                    Image(systemName: AppSymbols.arrow)
+                        .font(.system(size: 26))
                         .foregroundStyle(AppColors.secondaryText)
 
                 }
-
-                Spacer()
-
-                Image(systemName: "arrow.right.circle.fill")
-                    .font(.system(size: 26))
-                    .foregroundStyle(.secondary)
+                .padding(AppSpacing.large)
 
             }
-            .padding(AppSpacing.large)
 
         }
+        .buttonStyle(.plain)
+        .pressAnimation()
 
     }
 
 }
 
 #Preview {
+
     ZStack {
 
         GlassBackground()
@@ -48,4 +60,5 @@ struct ActionCard: View {
             .padding()
 
     }
+
 }

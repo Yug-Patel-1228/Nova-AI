@@ -57,9 +57,25 @@ struct HomeView: View {
                             title: AppConstants.recentConversations
                         )
 
-                        Text("No conversations yet")
-                            .foregroundStyle(AppColors.secondaryText)
+                        VStack(spacing: AppSpacing.medium) {
 
+                            Image(systemName: "message.badge")
+                                .font(.system(size: 40))
+                                .foregroundStyle(AppColors.secondaryText)
+
+                            Text("No conversations yet")
+                                .font(AppTypography.headline)
+
+                            Text("Start your first conversation with Nova.")
+                                .font(AppTypography.body)
+                                .foregroundStyle(AppColors.secondaryText)
+                                .multilineTextAlignment(.center)
+
+                        }
+                        
+                        .frame(maxWidth: .infinity)
+                        .padding(.vertical, AppSpacing.xxLarge)
+                        
                     }
                     .padding(AppSpacing.screenPadding)
 
