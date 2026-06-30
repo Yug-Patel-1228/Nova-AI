@@ -1,18 +1,57 @@
-//
-//  ChatView.swift
-//  NovaAI
-//
-//  Created by Yug  on 6/30/26.
-//
-
 import SwiftUI
 
 struct ChatView: View {
+
+    let onBack: () -> Void
+
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+
+        NavigationStack {
+
+            ZStack {
+
+                GlassBackground()
+
+                VStack {
+
+                    Spacer()
+
+                    Text("Chat Coming Soon")
+                        .font(AppTypography.title)
+
+                    Spacer()
+
+                }
+
+            }
+            .toolbar {
+
+                ToolbarItem(placement: .topBarLeading) {
+
+                    Button {
+
+                        onBack()
+
+                    } label: {
+
+                        Image(systemName: "chevron.left")
+
+                    }
+
+                }
+
+            }
+
+        }
+
     }
+
 }
 
 #Preview {
-    ChatView()
+
+    ChatView {
+
+    }
+
 }

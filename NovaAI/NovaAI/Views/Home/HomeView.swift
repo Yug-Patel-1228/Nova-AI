@@ -2,6 +2,8 @@ import SwiftUI
 
 struct HomeView: View {
 
+    let onNewChat: () -> Void
+
     private let columns = [
         GridItem(.flexible()),
         GridItem(.flexible())
@@ -22,33 +24,33 @@ struct HomeView: View {
 
                         HeroHeader()
 
-                        ActionCard()
+                        ActionCard(action: onNewChat)
 
                         LazyVGrid(columns: columns,
                                   spacing: AppSpacing.medium) {
 
                             FeatureCard(
                                 icon: AppSymbols.pdf,
-                                title: "Documents",
-                                subtitle: "Understand PDFs"
+                                title: AppConstants.understandDocuments,
+                                subtitle: AppConstants.documentsSubtitle
                             )
 
                             FeatureCard(
                                 icon: AppSymbols.image,
-                                title: "Images",
-                                subtitle: "Analyze photos"
+                                title: AppConstants.analyzeImages,
+                                subtitle: AppConstants.imagesSubtitle
                             )
 
                             FeatureCard(
                                 icon: AppSymbols.voice,
-                                title: "Voice",
-                                subtitle: "Talk naturally"
+                                title: AppConstants.talkNaturally,
+                                subtitle: AppConstants.voiceSubtitle
                             )
 
                             FeatureCard(
                                 icon: AppSymbols.search,
-                                title: "Web",
-                                subtitle: "Explore online"
+                                title: AppConstants.exploreWeb,
+                                subtitle: AppConstants.webSubtitle
                             )
 
                         }
@@ -72,10 +74,9 @@ struct HomeView: View {
                                 .multilineTextAlignment(.center)
 
                         }
-                        
                         .frame(maxWidth: .infinity)
                         .padding(.vertical, AppSpacing.xxLarge)
-                        
+
                     }
                     .padding(AppSpacing.screenPadding)
 
@@ -91,5 +92,7 @@ struct HomeView: View {
 }
 
 #Preview {
-    HomeView()
+    HomeView(onNewChat: {
+
+    })
 }

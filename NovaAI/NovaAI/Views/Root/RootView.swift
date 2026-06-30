@@ -2,33 +2,50 @@ import SwiftUI
 
 struct RootView: View {
 
-    @State private var showSplash = true
+    @State private var screen: AppScreen = .splash
 
     var body: some View {
 
-        ZStack {
+        switch screen {
 
-            if showSplash {
+        case .splash:
 
-                SplashView()
-                    .transition(.opacity)
+            SplashView {
 
-            } else {
+                withAnimation(.spring(response: 0.6,
+                                      dampingFraction: 0.85)) {
 
-                HomeView()
-                    .transition(.opacity)
+                    screen = .home
 
-            }
-
-        }
-        .animation(.easeInOut(duration: 0.5), value: showSplash)
-        .onAppear {
-
-            DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
-
-                showSplash = false
+                }
 
             }
+
+        case .home:
+
+            HomeView(onNewChat: {
+
+                withAnimation(.spring(response: 0.55,
+                                      dampingFraction: 0.85)) {
+
+                    screen = .chat
+
+                }
+
+            })
+
+        case .chat:
+
+            ChatView(onBack: {
+
+                withAnimation(.spring(response: 0.55,
+                                      dampingFraction: 0.85)) {
+
+                    screen = .home
+
+                }
+
+            })
 
         }
 
