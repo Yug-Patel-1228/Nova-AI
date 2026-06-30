@@ -1,6 +1,6 @@
 import SwiftUI
 
-enum Typography {
+enum AppTypography {
 
     // MARK: - Large Titles
 

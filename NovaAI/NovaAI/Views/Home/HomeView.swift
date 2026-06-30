@@ -1,22 +1,58 @@
 import SwiftUI
 
 struct HomeView: View {
+
     var body: some View {
-        NavigationStack {
-            VStack(spacing: 20) {
-                Image(systemName: "sparkles")
-                    .font(.system(size: 60))
 
-                Text("Nova AI")
-                    .font(.largeTitle)
-                    .bold()
+        ZStack {
 
-                Text("Your Apple-first AI Assistant")
-                    .foregroundStyle(.secondary)
+            GlassBackground()
+
+            ScrollView {
+
+                VStack(alignment: .leading, spacing: AppSpacing.xxLarge) {
+
+                    Spacer(minLength: 40)
+
+                    VStack(alignment: .leading, spacing: AppSpacing.medium) {
+
+                        Spacer(minLength: 40)
+
+                        HeroHeader()
+
+                    }
+
+                    GlassCard {
+
+                        VStack(alignment: .leading, spacing: AppSpacing.medium) {
+
+                            Text("Ask Anything")
+                                .font(AppTypography.headline)
+
+                            HStack {
+
+                                Image(systemName: "message")
+
+                                Text("Type your message...")
+
+                            }
+                            .foregroundStyle(AppColors.secondaryText)
+
+                        }
+
+                    }
+
+                    Spacer()
+
+                }
+                .padding(AppSpacing.screenPadding)
+
             }
-            .navigationTitle("Nova AI")
+
         }
+
     }
+
 }
 
 #Preview {

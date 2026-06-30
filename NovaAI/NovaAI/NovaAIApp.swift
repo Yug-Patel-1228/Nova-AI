@@ -4,7 +4,7 @@ import SwiftUI
 struct NovaAIApp: App {
     var body: some Scene {
         WindowGroup {
-            HomeView()
+            RootView()
         }
     }
 }
