@@ -15,14 +15,17 @@ enum AppColors {
 
     // MARK: - Accent
 
-    static let accent = Color.blue
+    static let accent = Color.accentColor
 
     // MARK: - Borders
 
-    static let border = Color.gray.opacity(0.18)
+    static let border = Color.primary.opacity(0.08)
 
     // MARK: - Glass
 
     static let glass = Color.white.opacity(0.12)
 
+    // MARK: - Shadow
+
+    static let shadow = Color.black.opacity(0.08)
 }
