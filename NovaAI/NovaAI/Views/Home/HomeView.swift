@@ -4,6 +4,8 @@ struct HomeView: View {
 
     let onNewChat: () -> Void
 
+    @State private var chatManager = ChatManager.shared
+
     private let columns = [
         GridItem(.flexible()),
         GridItem(.flexible())
@@ -19,15 +21,25 @@ struct HomeView: View {
 
                 ScrollView {
 
-                    VStack(alignment: .leading,
-                           spacing: AppSpacing.xxLarge) {
+                    VStack(
+                        alignment: .leading,
+                        spacing: AppSpacing.xxLarge
+                    ) {
 
                         HeroHeader()
 
-                        ActionCard(action: onNewChat)
+                        ActionCard(action: {
 
-                        LazyVGrid(columns: columns,
-                                  spacing: AppSpacing.medium) {
+                            ChatManager.shared.createConversation()
+
+                            onNewChat()
+
+                        })
+
+                        LazyVGrid(
+                            columns: columns,
+                            spacing: AppSpacing.medium
+                        ) {
 
                             FeatureCard(
                                 icon: AppSymbols.pdf,
@@ -59,23 +71,59 @@ struct HomeView: View {
                             title: AppConstants.recentConversations
                         )
 
-                        VStack(spacing: AppSpacing.medium) {
+                        LazyVStack(
+                            spacing: AppSpacing.small
+                        ) {
 
-                            Image(systemName: "message.badge")
-                                .font(.system(size: 40))
-                                .foregroundStyle(AppColors.secondaryText)
+                            if chatManager.conversations.isEmpty {
 
-                            Text("No conversations yet")
-                                .font(AppTypography.headline)
+                                Text("No conversations yet")
+                                    .foregroundStyle(.secondary)
+                                    .padding()
 
-                            Text("Start your first conversation with Nova.")
-                                .font(AppTypography.body)
-                                .foregroundStyle(AppColors.secondaryText)
-                                .multilineTextAlignment(.center)
+                            } else {
+
+                                ForEach(chatManager.conversations) { conversation in
+
+                                    ConversationRow(
+                                        conversation: conversation
+                                    )
+                                    .contentShape(Rectangle())
+                                    .onTapGesture {
+
+                                        chatManager.selectConversation(
+                                            id: conversation.id
+                                        )
+
+                                        onNewChat()
+
+                                    }
+                                    .swipeActions {
+
+                                        Button(
+                                            role: .destructive
+                                        ) {
+
+                                            chatManager.deleteConversation(
+                                                id: conversation.id
+                                            )
+
+                                        } label: {
+
+                                            Label(
+                                                "Delete",
+                                                systemImage: "trash"
+                                            )
+
+                                        }
+
+                                    }
+
+                                }
+
+                            }
 
                         }
-                        .frame(maxWidth: .infinity)
-                        .padding(.vertical, AppSpacing.xxLarge)
 
                     }
                     .padding(AppSpacing.screenPadding)
@@ -92,7 +140,9 @@ struct HomeView: View {
 }
 
 #Preview {
-    HomeView(onNewChat: {
 
-    })
+    HomeView {
+
+    }
+
 }

@@ -90,6 +90,11 @@ struct ChatView: View {
                 }
 
             }
+            .onAppear {
+
+                viewModel.manager = ChatManager.shared
+
+            }
 
         }
 

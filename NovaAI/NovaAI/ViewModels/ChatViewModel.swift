@@ -4,11 +4,27 @@ import Observation
 @Observable
 final class ChatViewModel {
 
-    var messages: [Message] = []
-
     var state: AIState = .idle
 
     var inputText = ""
+
+    weak var manager: ChatManager?
+
+    var messages: [Message] {
+
+        get {
+
+            manager?.currentConversation?.messages ?? []
+
+        }
+
+        set {
+
+            manager?.updateMessages(newValue)
+
+        }
+
+    }
 
     private let service: AIService
 
