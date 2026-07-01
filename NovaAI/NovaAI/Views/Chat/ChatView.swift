@@ -4,6 +4,8 @@ struct ChatView: View {
 
     let onBack: () -> Void
 
+    @State private var viewModel = ChatViewModel()
+
     var body: some View {
 
         NavigationStack {
@@ -12,18 +14,58 @@ struct ChatView: View {
 
                 GlassBackground()
 
-                VStack {
+                VStack(spacing: 0) {
 
-                    Spacer()
+                    if viewModel.messages.isEmpty {
 
-                    Text("Chat Coming Soon")
-                        .font(AppTypography.title)
+                        EmptyChatView()
 
-                    Spacer()
+                    } else {
+
+                        ScrollView {
+
+                            LazyVStack(
+                                spacing: AppSpacing.medium
+                            ) {
+
+                                ForEach(viewModel.messages) { message in
+
+                                    MessageBubble(
+                                        message: message
+                                    )
+
+                                }
+
+                                if viewModel.state == .thinking {
+
+                                    TypingIndicator()
+                                        .padding(.vertical)
+
+                                }
+
+                            }
+                            .padding()
+
+                        }
+
+                    }
+
+                    ChatInputBar(
+                        text: $viewModel.inputText
+                    ) {
+
+                        Task {
+
+                            await viewModel.sendMessage()
+
+                        }
+
+                    }
 
                 }
 
             }
+            .navigationBarTitleDisplayMode(.inline)
             .toolbar {
 
                 ToolbarItem(placement: .topBarLeading) {
@@ -37,6 +79,13 @@ struct ChatView: View {
                         Image(systemName: "chevron.left")
 
                     }
+
+                }
+
+                ToolbarItem(placement: .principal) {
+
+                    Text(AppConstants.appName)
+                        .font(AppTypography.headline)
 
                 }
 

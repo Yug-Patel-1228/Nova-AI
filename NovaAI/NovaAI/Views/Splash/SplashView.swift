@@ -63,7 +63,7 @@ struct SplashView: View {
 
             }
 
-            DispatchQueue.main.asyncAfter(deadline: .now() + 1.10) {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
 
                 animationFinished = true
 
