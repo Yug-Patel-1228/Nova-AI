@@ -6,6 +6,11 @@ final class ChatManager {
 
     static let shared = ChatManager()
 
+    // MARK: - Storage Keys
+
+    private let conversationsKey = "nova.conversations"
+    private let selectedConversationKey = "nova.selectedConversation"
+
     // MARK: - All Conversations
 
     private(set) var conversations: [Conversation] = []
@@ -15,6 +20,8 @@ final class ChatManager {
     private(set) var selectedConversationID: UUID?
 
     private init() {
+
+        load()
 
         if conversations.isEmpty {
 
@@ -51,6 +58,8 @@ final class ChatManager {
 
         selectedConversationID = conversation.id
 
+        save()
+
         return conversation
 
     }
@@ -60,6 +69,8 @@ final class ChatManager {
     func selectConversation(id: UUID) {
 
         selectedConversationID = id
+
+        save()
 
     }
 
@@ -84,6 +95,7 @@ final class ChatManager {
         if conversations.isEmpty {
 
             createConversation()
+
             return
 
         }
@@ -101,6 +113,8 @@ final class ChatManager {
             }
 
         }
+
+        save()
 
     }
 
@@ -127,11 +141,72 @@ final class ChatManager {
         if conversations[index].title == "New Chat",
            let firstUser = messages.first(where: {
 
-               $0.role == .user
+            $0.role == .user
 
-           }) {
+        }) {
 
             conversations[index].title = String(firstUser.text.prefix(30))
+
+        }
+
+        save()
+
+    }
+
+    // MARK: - Persistence
+
+    private func save() {
+
+        do {
+
+            let data = try JSONEncoder().encode(conversations)
+
+            UserDefaults.standard.set(
+                data,
+                forKey: conversationsKey
+            )
+
+            UserDefaults.standard.set(
+                selectedConversationID?.uuidString,
+                forKey: selectedConversationKey
+            )
+
+        } catch {
+
+            print("Failed to save conversations:", error)
+
+        }
+
+    }
+
+    private func load() {
+
+        guard let data = UserDefaults.standard.data(
+            forKey: conversationsKey
+        ) else {
+
+            return
+
+        }
+
+        do {
+
+            conversations = try JSONDecoder().decode(
+                [Conversation].self,
+                from: data
+            )
+
+            if let uuid = UserDefaults.standard.string(
+                forKey: selectedConversationKey
+            ) {
+
+                selectedConversationID = UUID(uuidString: uuid)
+
+            }
+
+        } catch {
+
+            print("Failed to load conversations:", error)
 
         }
 

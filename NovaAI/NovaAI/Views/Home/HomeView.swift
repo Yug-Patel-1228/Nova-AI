@@ -15,109 +15,103 @@ struct HomeView: View {
 
         NavigationStack {
 
-            ZStack {
+            List {
 
-                GlassBackground()
+                // MARK: - Header
 
-                ScrollView {
+                HeroHeader()
+                    .listRowSeparator(.hidden)
+                    .listRowBackground(Color.clear)
 
-                    VStack(
-                        alignment: .leading,
-                        spacing: AppSpacing.xxLarge
-                    ) {
+                // MARK: - New Chat
 
-                        HeroHeader()
+                ActionCard(action: {
 
-                        ActionCard(action: {
+                    ChatManager.shared.createConversation()
 
-                            ChatManager.shared.createConversation()
+                    onNewChat()
 
-                            onNewChat()
+                })
+                .listRowSeparator(.hidden)
+                .listRowBackground(Color.clear)
 
-                        })
+                // MARK: - Features
 
-                        LazyVGrid(
-                            columns: columns,
-                            spacing: AppSpacing.medium
-                        ) {
+                LazyVGrid(
+                    columns: columns,
+                    spacing: AppSpacing.medium
+                ) {
 
-                            FeatureCard(
-                                icon: AppSymbols.pdf,
-                                title: AppConstants.understandDocuments,
-                                subtitle: AppConstants.documentsSubtitle
+                    FeatureCard(
+                        icon: AppSymbols.pdf,
+                        title: AppConstants.understandDocuments,
+                        subtitle: AppConstants.documentsSubtitle
+                    )
+
+                    FeatureCard(
+                        icon: AppSymbols.image,
+                        title: AppConstants.analyzeImages,
+                        subtitle: AppConstants.imagesSubtitle
+                    )
+
+                    FeatureCard(
+                        icon: AppSymbols.voice,
+                        title: AppConstants.talkNaturally,
+                        subtitle: AppConstants.voiceSubtitle
+                    )
+
+                    FeatureCard(
+                        icon: AppSymbols.search,
+                        title: AppConstants.exploreWeb,
+                        subtitle: AppConstants.webSubtitle
+                    )
+
+                }
+                .listRowSeparator(.hidden)
+                .listRowBackground(Color.clear)
+
+                // MARK: - Recent Conversations
+
+                Section {
+
+                    if chatManager.conversations.isEmpty {
+
+                        Text("No conversations yet")
+                            .foregroundStyle(.secondary)
+
+                    } else {
+
+                        ForEach(chatManager.conversations) { conversation in
+
+                            ConversationRow(
+                                conversation: conversation
                             )
+                            .contentShape(Rectangle())
+                            .onTapGesture {
 
-                            FeatureCard(
-                                icon: AppSymbols.image,
-                                title: AppConstants.analyzeImages,
-                                subtitle: AppConstants.imagesSubtitle
-                            )
+                                chatManager.selectConversation(
+                                    id: conversation.id
+                                )
 
-                            FeatureCard(
-                                icon: AppSymbols.voice,
-                                title: AppConstants.talkNaturally,
-                                subtitle: AppConstants.voiceSubtitle
-                            )
+                                onNewChat()
 
-                            FeatureCard(
-                                icon: AppSymbols.search,
-                                title: AppConstants.exploreWeb,
-                                subtitle: AppConstants.webSubtitle
-                            )
+                            }
+                            .swipeActions {
 
-                        }
+                                Button(
+                                    role: .destructive
+                                ) {
 
-                        SectionHeader(
-                            title: AppConstants.recentConversations
-                        )
-
-                        LazyVStack(
-                            spacing: AppSpacing.small
-                        ) {
-
-                            if chatManager.conversations.isEmpty {
-
-                                Text("No conversations yet")
-                                    .foregroundStyle(.secondary)
-                                    .padding()
-
-                            } else {
-
-                                ForEach(chatManager.conversations) { conversation in
-
-                                    ConversationRow(
-                                        conversation: conversation
+                                    chatManager.deleteConversation(
+                                        id: conversation.id
                                     )
-                                    .contentShape(Rectangle())
-                                    .onTapGesture {
 
-                                        chatManager.selectConversation(
-                                            id: conversation.id
-                                        )
+                                } label: {
 
-                                        onNewChat()
-
-                                    }
-                                    .swipeActions {
-
-                                        Button(
-                                            role: .destructive
-                                        ) {
-
-                                            chatManager.deleteConversation(
-                                                id: conversation.id
-                                            )
-
-                                        } label: {
-
-                                            Label(
-                                                "Delete",
-                                                systemImage: "trash"
-                                            )
-
-                                        }
-
-                                    }
+                                    Label(
+                                        "Delete",
+                                        systemImage: "trash"
+                                    )
 
                                 }
 
@@ -126,11 +120,25 @@ struct HomeView: View {
                         }
 
                     }
-                    .padding(AppSpacing.screenPadding)
+
+                } header: {
+
+                    SectionHeader(
+                        title: AppConstants.recentConversations
+                    )
 
                 }
 
             }
+            .listStyle(.plain)
+            .scrollContentBackground(.hidden)
+
+            .background {
+
+                GlassBackground()
+
+            }
+
             .navigationBarHidden(true)
 
         }
